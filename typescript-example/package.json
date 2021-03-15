@@ -2,10 +2,11 @@
   "name": "typescript-example",
   "version": "0.0.1",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc -p src && node dist/app.js"
+    "test": "jest",
+    "build": "tsc --p tsconfig.build.json",
+    "start": "npm run build && node dist/index.js"
   },
   "author": "Park Hyeonjun",
   "license": "ISC",
