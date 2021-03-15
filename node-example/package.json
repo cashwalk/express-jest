@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/app.js",
-    "test": "jest --verbose"
+    "test": "jest --no-cache"
   },
   "author": "",
   "license": "ISC",

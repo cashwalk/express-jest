@@ -4,5 +4,5 @@ exports.checkAndAddUser = ({ name, age }) => {
   if (age < 1) throw new Error('invalid age range')
 
   const id = 1
-  return { id, name, age }
+  return id
 }
