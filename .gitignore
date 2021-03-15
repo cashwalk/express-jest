@@ -5,3 +5,6 @@ node_modules
 dist
 **/dist
 **/package-lock.json
+typescript-example/__tests__/*.js
+typescript-example/__tests__/*.js*
+
