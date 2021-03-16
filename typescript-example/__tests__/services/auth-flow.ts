@@ -1,13 +1,14 @@
 import UserService, {PASSWORD_LENGTH, USERNAME_LENGTH} from '@/services/user'
 import {User} from '@/models/users';
 import UserRepo from '@/repositories/UserRepo';
+import UserRepoMock from "@test/repositories/UserRepoMock";
 
 describe("사용자 인증 절차", () => {
   let userRepo: UserRepo;
   let service;
   beforeAll(()=>{
     //COMMON BUILD
-    userRepo = new UserRepo();
+    userRepo = new UserRepoMock();
     service = new UserService(userRepo)
   });
   
