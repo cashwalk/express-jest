@@ -1,11 +1,8 @@
 import * as express from "express";
-import UserRepoImpl from "../repositories/UserRepoImpl";
-import UserService from "../services/UserService";
+import {userService} from "../services";
 import {User} from "../models/users";
 
 const router = express.Router();
-
-const usrService = new UserService(new UserRepoImpl());
 
 router.get('/', (req, res) => {
   res.send('Hello World!');
@@ -19,7 +16,7 @@ router.post('/signup', async (req, res) => {
   }
   
   try {
-    await usrService.createUser(user)
+    await userService.createUser(user)
     res.json({
       result: true
     });
@@ -37,7 +34,7 @@ router.post('/signin', async (req, res) => {
     password: req.body.password
   }
   
-  const isSuccess = await usrService.signin(user);
+  const isSuccess = await userService.signin(user);
   console.log(isSuccess)
   if( isSuccess ) {
     res.json({

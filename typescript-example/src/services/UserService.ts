@@ -5,7 +5,7 @@ export const USERNAME_LENGTH = 16;
 export const PASSWORD_LENGTH = 30;
 
 export default class UserService {
-  private repo: UserRepo;
+  repo: UserRepo;
   
   constructor(repo: UserRepo) {
     this.repo = repo;
