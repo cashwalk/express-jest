@@ -1,4 +1,4 @@
-import UserService, {PASSWORD_LENGTH, USERNAME_LENGTH} from '@/services/user'
+import UserService, {PASSWORD_LENGTH, USERNAME_LENGTH} from '@/services/UserService'
 import {User} from '@/models/users';
 import UserRepo from '@/repositories/UserRepo';
 import UserRepoMock from "@test/repositories/UserRepoMock";
@@ -106,7 +106,7 @@ describe("사용자 인증 절차", () => {
     expect(isSuccess).toBe(false);
   });
   
-  it('실패테스트, 잘못된 입력 정보', async () => {
+  it('실패테스트, 잘못된 입력 정보 ', async () => {
     const user = initUser();
     await userRepo.insertUser(initUser());
     const userToLogin = {...user, password: ''}
