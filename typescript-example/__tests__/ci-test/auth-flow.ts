@@ -14,14 +14,16 @@ describe('test endpoint', () => {
     //COMMON BUILD
   });
   
+  // Callback 방식
   it('', (done) => {
     request.get('/')
       .expect(200)
       .end(done);
   })
   
-  it('CI 실패, 로그인 시도', (done) => {
-    request.post('/signin')
+  // Async 방식
+  it('CI 실패, 로그인 시도', async () => {
+    await request.post('/signin')
       .send({username: 'test', password: '1234'})
       .set('Accept', 'application/json')
       
@@ -31,15 +33,15 @@ describe('test endpoint', () => {
       })
       .expect(200, {
         result: false
-      }, done);
+      });
   })
   
-  it('CI 성공, 로그인 시도', async (done) => {
+  it('CI 성공, 로그인 시도', async () => {
     const user = initUser();
     await userRepo.insertUser(user);
     
     
-    request.post('/signin')
+    await request.post('/signin')
       .send(user)
       .set('Accept', 'application/json')
       
@@ -49,7 +51,7 @@ describe('test endpoint', () => {
       })
       .expect(200, {
         result: true
-      }, done);
+      });
     
   })
   
