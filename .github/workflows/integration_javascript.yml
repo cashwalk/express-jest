@@ -9,7 +9,7 @@ jobs:
     # 일반 프로젝트에는 필요없음
     defaults: 
       run:
-        working-directory: node-example
+        working-directory: javascript-example
 
     # 서비스 아래의 rdb1, rdb2, cache 값은 다른 값으로 설정 가능하며 해당 서비스의 DOMAIN NAME 으로 사용됩니다.
     # 모든 설정 방법은 docker 설정과 일치합니다. 에를 들어 port 값은 좌측은 외부 port 우측은 포워딩 되는 내부 포트입니다.
