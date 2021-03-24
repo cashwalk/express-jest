@@ -34,6 +34,7 @@ jobs:
           - 6379:6379
 
     steps:
+    # 아래의 명령문들이 테스트를 하기 위한 설정 및 실행들 입니다. run 하나가 Linux 에서의 명령문입니다.
       - uses: actions/checkout@v2
 
       - name: setup node environment

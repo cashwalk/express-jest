@@ -88,7 +88,13 @@ it('', async () => {
 ## CI, CD 환경
 실서버와 같은 DB 를 새로 구성해 테스트 합니다.   
 그러므로 로컬에서도 Mocker 보다 실제 DB 를 사용한 테스트를 권장합니다.  
-CI, CD 에서 사용할 DB 설치 및 초기화 스크립트는 소스를 통해 제공될 예정입니다.
+
+`[GIT_ROOT]/.github/workflows/` 경로에 스크립트가 있어야 합니다.  
+해당 샘플의 경우 한 저장소에 두 프로젝트가 있지만 일반적인 경우 프로젝트 루트에 .github 폴더가 위치해야 합니다.  
+javascript, typescript 를 위한 스크립트 동일하게 제작됐습니다.  
+
+CI/CD 는 docker 기반으로 사용되기 때문에 사용되는 이미지 별로 환경변수와 명령어들을 위해 docker hub 에서 문서를 참조하는 것이 좋습니다.  
+해당 스크립트에선 [node](https://hub.docker.com/_/node), [mysql](https://hub.docker.com/_/mysql), [postgres](https://hub.docker.com/_/postgres), [dynamodb](https://hub.docker.com/r/amazon/dynamodb-local/), [redis](https://hub.docker.com/_/redis) 이미지가 사용됐습니다.  
 
 ----
 ##### 참고문헌
