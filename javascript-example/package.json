@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/app.js",
+    "start": "node src/index.js",
     "test": "jest --no-cache"
   },
   "author": "",
@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "express-validator": "^6.10.0"
+    "express-validator": "^6.10.0",
+    "pg": "^8.5.1"
   }
 }

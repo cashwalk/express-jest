@@ -1,0 +1,42 @@
+name: Deploy production
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: node:lts-slim
+    defaults: 
+      run:
+        working-directory: typescript-example
+
+    services:
+      rdb:
+        image: mysql:5
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+        ports:
+          - 3306:3306
+      cache:
+        image: redis:6
+        ports:
+          - 6379:6379
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: setup node environment
+        run: npm install
+
+      - name: Install RDB Dependencies
+        run: apt-get update && apt-get install -y default-mysql-client
+
+      - name: Initialize RDB
+        run: mysql -h rdb -u root -prootpassword < dump.sql
+
+      - name: Build and Test
+        run: npx jest
+        env: 
+          DB_HOST: rdb
+
+      - name: Success
+        run: echo deployed successfully.

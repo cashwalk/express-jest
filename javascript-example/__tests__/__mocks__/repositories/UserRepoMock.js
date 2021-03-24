@@ -1,11 +1,12 @@
-import {User} from "@/domains/users";
-import UserRepo from "@/repositories/UserRepo";
+const UserRepo = require('@/repositories/UserRepo').UserRepo;
+const data = [];
 
-const data : User[] = [];
-
-export default class UserRepoMock implements UserRepo{
+exports.UserRepoMock = class UserRepoMock extends UserRepo{
+  constructor() {
+    super();
+  }
   
-  async insertUser(user: User): Promise<User> {
+  async insertUser(user) {
     const isExist = data.find(rw => {
       return user.username === rw.username
     });
@@ -16,19 +17,18 @@ export default class UserRepoMock implements UserRepo{
       throw new Error('Duplicate username');
     }
     
-    
     return data.find(
       rw => user.username === rw.username
     );
   }
   
-  async findUserByUsername(username: string): Promise<User> {
+  async findUserByUsername(username) {
     return data.find(
       rw => username === rw.username
     );
   }
   
-  truncate(): void {
+  truncate() {
     data.length = 0;
   }
 }

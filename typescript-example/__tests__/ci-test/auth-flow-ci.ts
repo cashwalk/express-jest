@@ -1,6 +1,5 @@
 import {app} from "@/app";
 import * as supertest  from "supertest";
-import UserRepoMock from "@test/__mocks__/repositories/UserRepoMock";
 import {initUser} from "@test/__mocks__/userMocks";
 import {userService} from "@/services";
 

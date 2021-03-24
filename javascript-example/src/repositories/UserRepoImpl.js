@@ -1,14 +1,12 @@
-import {User} from "../domains/users";
-import UserRepo from "./UserRepo";
+const UserRepo = require('./UserRepo').UserRepo;
+const data = [];
 
-const data : User[] = [];
-
-/**
- * 구현되야 함.
- */
-export default class UserRepoImpl implements UserRepo{
+exports.UserRepoImpl = class UserRepoImpl extends UserRepo{
+  constructor() {
+    super();
+  }
   
-  async insertUser(user: User): Promise<User> {
+  async insertUser(user) {
     console.warn('Mocking class has to be implemendted with real DB');
     const isExist = data.find(rw => {
       return user.username === rw.username
@@ -20,21 +18,21 @@ export default class UserRepoImpl implements UserRepo{
       throw new Error('Duplicate username');
     }
     
-    
     return data.find(
       rw => user.username === rw.username
     );
   }
   
-  async findUserByUsername(username: string): Promise<User> {
+  async findUserByUsername(username) {
     console.warn('Mocking class has to be implemendted with real DB');
     return data.find(
       rw => username === rw.username
     );
   }
   
-  truncate(): void {
+  truncate() {
     console.warn('Mocking class has to be implemendted with real DB');
     data.length = 0;
   }
+  
 }

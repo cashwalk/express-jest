@@ -1,0 +1,44 @@
+name: Deploy production
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: node:lts-slim
+    defaults: 
+      run:
+        working-directory: node-example
+
+    services:
+      rdb:
+        image: postgres
+        ports:
+          - 5432:5432
+      dynamodb:
+        image: amazon/dynamodb-local
+        ports:
+          - 8000:8000
+      cache:
+        image: redis:6
+        ports:
+          - 6379:6379
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: setup node environment
+        run: npm install
+      # package-lock.json 파일이 저장소에 있을 때는 npm ci 명령어 사용 가능
+
+      - name: Initialize RDB
+        run: node .github/scripts/initialize_pg.js
+
+      - name: Build and Test
+        run: npx jest
+        env: 
+          DB_HOST: postgres
+          NOSQL_HOST: dynamodb
+          CACHE_HOST: cache
+
+      - name: Success
+        run: echo deployed successfully.

@@ -1,6 +1,5 @@
-import * as express from "express";
-import {userService} from "../services";
-import {User} from "../domains/users";
+const express = require("express");
+const userService = require("../services").userService;
 
 const router = express.Router();
 
@@ -9,7 +8,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/signup', async (req, res) => {
-  const user: User= {
+  const user = {
     name: req.body.name,
     username: req.body.username,
     password: req.body.password
@@ -29,13 +28,12 @@ router.post('/signup', async (req, res) => {
 })
 
 router.post('/signin', async (req, res) => {
-  const user: User= {
+  const user = {
     username: req.body.username,
     password: req.body.password
   }
   
   const isSuccess = await userService.signin(user);
-  console.log(isSuccess)
   if( isSuccess ) {
     res.json({
       result: true
@@ -48,4 +46,4 @@ router.post('/signin', async (req, res) => {
   }
 })
 
-export default router;
+exports.router = router;
