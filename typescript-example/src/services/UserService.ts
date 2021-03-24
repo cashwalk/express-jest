@@ -1,5 +1,5 @@
 import UserRepo from "../repositories/UserRepo";
-import {User} from "../models/users";
+import {User} from "../domains/users";
 
 export const USERNAME_LENGTH = 16;
 export const PASSWORD_LENGTH = 30;

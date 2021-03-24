@@ -1,4 +1,4 @@
-import {User} from "@/models/users";
+import {User} from "../domains/users";
 
 export default interface UserRepo {
   insertUser: (user: User) => Promise<User>;

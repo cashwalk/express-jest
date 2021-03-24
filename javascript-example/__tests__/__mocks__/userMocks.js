@@ -1,6 +1,5 @@
-import {User} from "@/domains/users";
 
-export const initUser = function createRandomUser(): User {
+const initUser = function createRandomUser() {
   return {
     username: randomStr(16),
     name: 'asdf',
@@ -8,7 +7,7 @@ export const initUser = function createRandomUser(): User {
   }
 }
 
-export const randomStr = function createRandomStr(len: number): string {
+const randomStr = function createRandomStr(len) {
   const eleList = 'ABCDEFHIJKLMNOPQRSTUVXYZabcdefhijklmnopqrstuvxyz';
   let result = '';
   Array(len).fill(0).forEach((_, i) => {
@@ -16,4 +15,9 @@ export const randomStr = function createRandomStr(len: number): string {
     result += eleList[random];
   });
   return result;
+}
+
+module.exports = {
+  initUser,
+  randomStr
 }

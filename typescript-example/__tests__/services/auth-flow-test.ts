@@ -1,5 +1,5 @@
 import UserService, {PASSWORD_LENGTH, USERNAME_LENGTH} from '@/services/UserService'
-import {User} from '@/models/users';
+import {User} from '@/domains/users';
 import UserRepo from '@/repositories/UserRepo';
 import UserRepoMock from "@test/__mocks__/repositories/UserRepoMock";
 import {initUser, randomStr} from "@test/__mocks__/userMocks";
