@@ -1,16 +1,20 @@
-import UserService, {PASSWORD_LENGTH, USERNAME_LENGTH} from '@/services/UserService'
-import {User} from '@/domains/users';
-import UserRepo from '@/repositories/UserRepo';
-import UserRepoMock from "@test/__mocks__/repositories/UserRepoMock";
-import {initUser, randomStr} from "@test/__mocks__/userMocks";
+const serviceFactory = require('@/services/UserService')
+const userMocker = require('@test/__mocks__/userMocks');
+const UserRepoDynamo = require("@/repositories/dynamoImpl/UserRepoDynamo").UserRepoDynamo;
+const initUser = userMocker.initUser;
+const randomStr = userMocker.randomStr;
+
+const USERNAME_LENGTH = serviceFactory.USERNAME_LENGTH;
+const PASSWORD_LENGTH = serviceFactory.PASSWORD_LENGTH;
+
 
 describe("사용자 인증 절차", () => {
-  let userRepo: UserRepo;
+  let userRepo;
   let service;
   beforeAll(()=>{
     //COMMON BUILD
-    userRepo = new UserRepoMock();
-    service = new UserService(userRepo)
+    userRepo = new UserRepoDynamo();
+    service = new serviceFactory.UserService(userRepo);
   });
   
   beforeEach(() => {
@@ -39,7 +43,7 @@ describe("사용자 인증 절차", () => {
     //OPERATE
     for(let i = 0; i < failTry.length; i++) {
       let ele = failTry[i];
-      const user: User = initUser();
+      const user = initUser();
       user.username = user.username.substring(0, user.username.length - 1) + ele.input;
       try {
         await service.createUser(user);
@@ -116,6 +120,10 @@ describe("사용자 인증 절차", () => {
   
     expect(isFail).toBe(false);
   });
+  
+  it('Truncate Test', async () => {
+    await userRepo.truncate();
+  })
   
   afterEach(() => {
     //COMMON CLEANUP

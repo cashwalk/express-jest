@@ -1,6 +1,6 @@
 import * as express from "express"
 import router from './routers/user-router';
-import * as bodyParser from 'body-parser';
+import {urlencoded, json as jsonencoded} from 'body-parser';
 
 class App {
   public application : express.Application;
@@ -10,10 +10,10 @@ class App {
 }
 const app = new App().application;
 
-app.use(bodyParser.urlencoded({
+app.use(urlencoded({
   extended: true
 }));
-app.use(bodyParser.json());
+app.use(jsonencoded());
 app.use(router);
 
 const init = () => {

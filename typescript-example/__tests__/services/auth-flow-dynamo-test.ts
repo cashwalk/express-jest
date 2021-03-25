@@ -1,7 +1,7 @@
 import UserService, {PASSWORD_LENGTH, USERNAME_LENGTH} from '@/services/UserService'
 import {User} from '@/domains/users';
 import UserRepo from '@/repositories/UserRepo';
-import UserRepoMock from "@test/__mocks__/repositories/UserRepoMock";
+import UserRepoDynamo from "@/repositories/dynamoImpl/UserRepoDynamo";
 import {initUser, randomStr} from "@test/__mocks__/userMocks";
 
 describe("사용자 인증 절차", () => {
@@ -9,7 +9,7 @@ describe("사용자 인증 절차", () => {
   let service;
   beforeAll(()=>{
     //COMMON BUILD
-    userRepo = new UserRepoMock();
+    userRepo = new UserRepoDynamo();
     service = new UserService(userRepo)
   });
   
@@ -117,12 +117,16 @@ describe("사용자 인증 절차", () => {
     expect(isFail).toBe(false);
   });
   
+  it('Truncate Test', async () => {
+    await userRepo.truncate();
+  })
+  
   afterEach(() => {
     //COMMON CLEANUP
   })
   
   afterAll(() => {
     //COMMON CLEANUP
-    userRepo.truncate();
+    // userRepo.truncate();
   })
 })
