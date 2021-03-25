@@ -11,6 +11,9 @@ jobs:
       run:
         working-directory: typescript-example
 
+    env: 
+      AWS_ENDPOINT: dynamodb:8000
+
     # 서비스 아래의 rdb1, rdb2, cache 값은 다른 값으로 설정 가능하며 해당 서비스의 DOMAIN NAME 으로 사용됩니다.
     # 모든 설정 방법은 docker 설정과 일치합니다. 에를 들어 port 값은 좌측은 외부 port 우측은 포워딩 되는 내부 포트입니다.
     services:
@@ -47,9 +50,11 @@ jobs:
       - name: Initialize RDB MySQL
         run: mysql -h rdb2 -u root -prootpassword < dump.sql
 
-
       - name: Initialize RDB Postgres
         run: node .github/scripts/initialize_pg.js
+
+      - name: Initialize DynamoDB 
+        run: node .github/scripts/init_dynamo.js
 
       - name: Build and Test
         run: npx jest
