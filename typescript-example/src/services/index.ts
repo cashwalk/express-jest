@@ -1,6 +1,6 @@
 import UserService from "./UserService";
 import UserRepoDynamo from "../repositories/dynamo-impl/UserRepoDynamo";
-import UserRepoMySQL from "@/repositories/mysql-impl/UserRepoMySQL";
+import UserRepoMySQL from "../repositories/mysql-impl/UserRepoMySQL";
 
 const DB_TYPE = process.env.DB_TYPE || 'dynamo';
 
