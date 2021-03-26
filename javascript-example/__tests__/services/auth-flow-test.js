@@ -1,20 +1,20 @@
-const serviceFactory = require('@/services/UserService')
+const userService = require('@/services').userService;
+const serviceInfos = require('@/services/UserService');
 const userMocker = require('@test/__mocks__/userMocks');
-const UserRepoMock = require("@test/__mocks__/repositories/UserRepoMock").UserRepoMock;
 const initUser = userMocker.initUser;
 const randomStr = userMocker.randomStr;
 
-const USERNAME_LENGTH = serviceFactory.USERNAME_LENGTH;
-const PASSWORD_LENGTH = serviceFactory.PASSWORD_LENGTH;
+const USERNAME_LENGTH = serviceInfos.USERNAME_LENGTH;
+const PASSWORD_LENGTH = serviceInfos.PASSWORD_LENGTH;
 
 
-describe("사용자 인증 절차", () => {
+describe("사용자 인증 절차 GROUP | ", () => {
   let userRepo;
   let service;
   beforeAll(()=>{
     //COMMON BUILD
-    userRepo = new UserRepoMock();
-    service = new serviceFactory.UserService(userRepo);
+    service = userService;
+    userRepo = userService.repo;
   });
   
   beforeEach(() => {
@@ -30,7 +30,7 @@ describe("사용자 인증 절차", () => {
     
     //CHECK
     expect(user.username).toBe(originalUser.username);
-    expect(user.id).toBe(originalUser.id);
+    expect(user.id).toBeTruthy();
   });
   
   it('실패테스트, username 에 특수문자 있을 시 에러', async () => {
@@ -84,8 +84,8 @@ describe("사용자 인증 절차", () => {
     const user = initUser();
     const duplicatedUser = {...user};
     
+    await service.createUser(user);
     try {
-      await service.createUser(user);
       await service.createUser(duplicatedUser)
     } catch (e) {
       return;
@@ -120,6 +120,10 @@ describe("사용자 인증 절차", () => {
     
     expect(isFail).toBe(false);
   });
+  
+  it('Truncate Test', async () => {
+    await userRepo.truncate();
+  })
   
   afterEach(() => {
     //COMMON CLEANUP

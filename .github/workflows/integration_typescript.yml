@@ -13,6 +13,7 @@ jobs:
 
     env: 
       AWS_ENDPOINT: dynamodb:8000
+      MYSQL_HOST: rdb2
       CACHE_HOST: cache
 
     # 서비스 아래의 rdb1, rdb2, cache 값은 다른 값으로 설정 가능하며 해당 서비스의 DOMAIN NAME 으로 사용됩니다.

@@ -1,7 +1,5 @@
-import {User} from "../../domains/users";
-import UserRepo from "../UserRepo";
-import * as mysql from 'mysql';
-import {Connection} from "mysql";
+const UserRepo = require('../UserRepo').UserRepo;
+const mysql = require('mysql');
 
 const TABLE_NAME = 'user';
 const MYSQL_HOST = process.env.MYSQL_HOST || 'localhost';
@@ -18,15 +16,13 @@ const MYSQL_OPTS = {
   database: MYSQL_DEFAULT_SCHEMA,
 };
 
-console.info(MYSQL_OPTS);
-
-export default class UserRepoMySQL implements UserRepo{
-  private pool;
+exports.UserRepoMySQL = class UserRepoMySQL extends UserRepo{
   
   constructor() {
+    super();
     if (process.env.NODE_ENV === 'production') {
       this.pool = {
-        getConn: (cb: (err, connection) => void ) => {
+        getConn: (cb) => {
           const pool = mysql.createPool(MYSQL_OPTS);
           pool.getConnection((err, conn) => {
             conn.release();
@@ -38,8 +34,8 @@ export default class UserRepoMySQL implements UserRepo{
       };
     } else {
       this.pool = {
-        getConn: (cb: (err, connection) => void ) => {
-          const conn: Connection = mysql.createConnection(MYSQL_OPTS);
+        getConn: (cb) => {
+          const conn = mysql.createConnection(MYSQL_OPTS);
           try {
             conn.connect();
             cb(null, conn);
@@ -53,12 +49,12 @@ export default class UserRepoMySQL implements UserRepo{
     }
   }
   
-  async insertUser(user: User): Promise<User> {
-    return new Promise<User> ((resolve, reject) => {
+  async insertUser(user) {
+    return new Promise ((resolve, reject) => {
       this.pool.getConn((err, conn) => {
         if (err) throw err; // not connected!
     
-        const sql: string = `INSERT INTO ${TABLE_NAME} (username, password, name) VALUES ('${user.username}', '${user.password}', '${user.name}')`;
+        const sql = `INSERT INTO ${TABLE_NAME} (username, password, name) VALUES ('${user.username}', '${user.password}', '${user.name}')`;
         conn.query(sql, async (error, results, fields) => {
           if (error) reject(error);
           if (!Boolean(results)) {
@@ -72,12 +68,12 @@ export default class UserRepoMySQL implements UserRepo{
     });
   }
   
-  async findUserByUsername(username: string): Promise<User> {
-    return new Promise<User> ((resolve, reject) => {
+  async findUserByUsername(username) {
+    return new Promise ((resolve, reject) => {
       this.pool.getConn(function(err, conn) {
         if (err) throw err; // not connected!
 
-        const sql: string = `SELECT * FROM ${TABLE_NAME} WHERE username='${username}'`;
+        const sql = `SELECT * FROM ${TABLE_NAME} WHERE username='${username}'`;
         conn.query(sql, function (error, results, fields) {
           if (error) reject(error);
 
@@ -87,12 +83,12 @@ export default class UserRepoMySQL implements UserRepo{
     });
   }
   
-  async findUserByPK (prmiaryKey: string): Promise<User> {
-    return new Promise<User> ((resolve, reject) => {
+  async findUserByPK (prmiaryKey) {
+    return new Promise ((resolve, reject) => {
       this.pool.getConn(function(err, conn) {
         if (err) throw err; // not connected!
       
-        const sql: string = `SELECT * FROM ${TABLE_NAME} WHERE id='${prmiaryKey}'`;
+        const sql = `SELECT * FROM ${TABLE_NAME} WHERE id='${prmiaryKey}'`;
         conn.query(sql, function (error, results, fields) {
           if (error) reject(error);
         

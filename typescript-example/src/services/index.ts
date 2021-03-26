@@ -4,6 +4,7 @@ import UserRepoMySQL from "../repositories/mysql-impl/UserRepoMySQL";
 
 const DB_TYPE = process.env.DB_TYPE || 'dynamo';
 
+console.info(`DB type is ${process.env.DB_TYPE}`);
 export const userService = (function initUserService() {
   if (DB_TYPE.toLowerCase() === 'mysql') {
     return new UserService(new UserRepoMySQL());
