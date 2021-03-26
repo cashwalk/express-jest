@@ -4,11 +4,11 @@ import * as mysql from 'mysql';
 import {Connection} from "mysql";
 
 const TABLE_NAME = 'user';
-const MYSQL_HOST = process.env.AWS_ENDPOINT || 'localhost';
-const MYSQL_PORT = Number(process.env.AWS_ENDPOINT) || 3306;
-const MYSQL_USERNAME = process.env.AWS_API_VERSION || 'root';
-const MYSQL_PASSWORD = process.env.AWS_ACCESS_KEY_ID || 'rootpassword';
-const MYSQL_DEFAULT_SCHEMA = process.env.AWS_SECRET_ACCESS_KEY || 'test_db';
+const MYSQL_HOST = process.env.MYSQL_HOST || 'localhost';
+const MYSQL_PORT = Number(process.env.MYSQL_PORT) || 3306;
+const MYSQL_USERNAME = process.env.MYSQL_USERNAME || 'root';
+const MYSQL_PASSWORD = process.env.MYSQL_PASSWORD || 'rootpassword';
+const MYSQL_DEFAULT_SCHEMA = process.env.MYSQL_DEFAULT_SCHEMA || 'test_db';
 
 const MYSQL_OPTS = {
   host: MYSQL_HOST,
