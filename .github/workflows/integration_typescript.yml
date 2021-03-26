@@ -48,7 +48,7 @@ jobs:
         run: apt-get update && apt-get install -y default-mysql-client
 
       - name: Initialize RDB MySQL
-        run: mysql -h rdb2 -u root -prootpassword < dump.sql
+        run: mysql -h rdb2 -u root -prootpassword < .github/scripts/dump.sql
 
       - name: Initialize RDB Postgres
         run: node .github/scripts/initialize_pg.js

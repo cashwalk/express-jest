@@ -1,6 +1,6 @@
 const serviceFactory = require('@/services/UserService')
 const userMocker = require('@test/__mocks__/userMocks');
-const UserRepoDynamo = require("@/repositories/dynamoImpl/UserRepoDynamo").UserRepoDynamo;
+const UserRepoDynamo = require("@/repositories/dynamo-impl/UserRepoDynamo").UserRepoDynamo;
 const initUser = userMocker.initUser;
 const randomStr = userMocker.randomStr;
 

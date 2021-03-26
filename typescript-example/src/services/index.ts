@@ -1,4 +1,15 @@
 import UserService from "./UserService";
-import UserRepoImpl from "../repositories/UserRepoImpl";
+import UserRepoDynamo from "../repositories/dynamo-impl/UserRepoDynamo";
+import UserRepoMySQL from "@/repositories/mysql-impl/UserRepoMySQL";
 
-export const userService = new UserService(new UserRepoImpl());
+const DB_TYPE = process.env.DB_TYPE || 'dynamo';
+
+export const userService = (function initUserService() {
+  if (DB_TYPE.toLowerCase() === 'mysql') {
+    return new UserService(new UserRepoMySQL());
+  } else if (DB_TYPE.toLowerCase() === 'postgres') {
+    return new UserService(new UserRepoDynamo());
+  } else {
+    return new UserService(new UserRepoDynamo());
+  }
+})();
