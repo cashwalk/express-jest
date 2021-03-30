@@ -1,16 +1,17 @@
-import UserService, {PASSWORD_LENGTH, USERNAME_LENGTH} from '@/services/UserService'
+import {PASSWORD_LENGTH, USERNAME_LENGTH} from '@/services/UserService'
+import {userService} from '@/services';
 import {User} from '@/domains/users';
 import UserRepo from '@/repositories/UserRepo';
-import UserRepoMock from "@test/__mocks__/repositories/UserRepoMock";
 import {initUser, randomStr} from "@test/__mocks__/userMocks";
 
-describe("사용자 인증 절차", () => {
+
+describe("사용자 인증 절차 GROUP | ", () => {
   let userRepo: UserRepo;
   let service;
   beforeAll(()=>{
     //COMMON BUILD
-    userRepo = new UserRepoMock();
-    service = new UserService(userRepo)
+    service = userService;
+    userRepo = service.repo;
   });
   
   beforeEach(() => {
@@ -26,7 +27,7 @@ describe("사용자 인증 절차", () => {
     
     //CHECK
     expect(user.username).toBe(originalUser.username);
-    expect(user.id).toBe(originalUser.id);
+    expect(user.id).toBeTruthy();
   });
   
   it('실패테스트, username 에 특수문자 있을 시 에러', async () => {
@@ -84,6 +85,7 @@ describe("사용자 인증 절차", () => {
     try {
       await service.createUser(duplicatedUser)
     } catch (e) {
+      console.info(e);
       return;
     }
     
@@ -117,12 +119,16 @@ describe("사용자 인증 절차", () => {
     expect(isFail).toBe(false);
   });
   
+  it.skip('Truncate Test', async () => {
+    await userRepo.close();
+  })
+  
   afterEach(() => {
     //COMMON CLEANUP
   })
   
   afterAll(() => {
     //COMMON CLEANUP
-    userRepo.truncate();
+    userRepo.close();
   })
 })

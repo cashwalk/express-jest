@@ -14,7 +14,7 @@ describe('test endpoint', () => {
   });
   
   // Callback 방식
-  it('', (done) => {
+  it('ping root', (done) => {
     request.get('/')
       .expect(200)
       .end(done);
@@ -25,8 +25,8 @@ describe('test endpoint', () => {
     await request.post('/signin')
       .send({username: 'test', password: '1234'})
       .set('Accept', 'application/json')
-      
-      
+
+
       .expect((res) => {
         res.body = {result: res.body.result}
       })
@@ -34,27 +34,28 @@ describe('test endpoint', () => {
         result: false
       });
   })
-  
+
   it('CI 성공, 로그인 시도', async () => {
     const user = initUser();
     await userRepo.insertUser(user);
-    
-    
+
+
     await request.post('/signin')
       .send(user)
       .set('Accept', 'application/json')
-      
-      
+
+
       .expect((res) => {
         res.body = {result: res.body.result}
       })
       .expect(200, {
         result: true
       });
-    
+
   })
   
   afterAll(() => {
-    userRepo.truncate();
+    //FIXME: DynamoDB 실행시 jest 와 충돌되어 jest가 꺼지지 않음
+    // userRepo.close();
   })
 })

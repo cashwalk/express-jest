@@ -13,12 +13,19 @@ jobs:
 
     env: 
       AWS_ENDPOINT: dynamodb:8000
+      MYSQL_HOST: rdb2
+      POSTGRES_HOST: rdb1
+      CACHE_HOST: cache
 
     # 서비스 아래의 rdb1, rdb2, cache 값은 다른 값으로 설정 가능하며 해당 서비스의 DOMAIN NAME 으로 사용됩니다.
     # 모든 설정 방법은 docker 설정과 일치합니다. 에를 들어 port 값은 좌측은 외부 port 우측은 포워딩 되는 내부 포트입니다.
     services:
       rdb1:
         image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: mysecretpassword
+          POSTGRES_DB: postgres
         ports:
           - 5432:5432
       rdb2:
@@ -48,22 +55,30 @@ jobs:
         run: apt-get update && apt-get install -y default-mysql-client
 
       - name: Initialize RDB MySQL
-        run: mysql -h rdb2 -u root -prootpassword < dump.sql
+        run: mysql -h rdb2 -u root -prootpassword < .github/scripts/dump.sql
 
-      - name: Initialize RDB Postgres
-        run: node .github/scripts/initialize_pg.js
+      - name: Migrating DB
+        run: npx sequelize-cli db:migrate
 
       - name: Initialize DynamoDB 
         run: node .github/scripts/init_dynamo.js
 
-      - name: Build and Test
+      - name: Test for DynamoDB
         run: npx jest
       # 상단의 services 에서 설정한 이름의 DOMAIN 값을 사용하기 위해 서비스 내부에 env 값을 설정해줍니다.
       # 해당 값을 바라보기 위해선 node, django 서비스 에서 OS 의 env 값을 읽어오는 설정을 해야합니다.
         env: 
-          DB_HOST: postgres
-          NOSQL_HOST: dynamodb
-          CACHE_HOST: cache
+          DB_TYPE: dynamo
+
+      - name: Test for MySQL
+        run: npx jest
+        env: 
+          DB_TYPE: mysql
+
+      - name: Test for Postgres + Sequelize
+        run: npx jest
+        env: 
+          DB_TYPE: postgres
 
       - name: Success
         run: echo deployed successfully.

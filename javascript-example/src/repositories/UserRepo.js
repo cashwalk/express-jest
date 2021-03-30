@@ -4,5 +4,5 @@ exports.UserRepo = class UserRepo {
   
   async findUserByUsername() {}
   
-  truncate() {}
+  close() {}
 }

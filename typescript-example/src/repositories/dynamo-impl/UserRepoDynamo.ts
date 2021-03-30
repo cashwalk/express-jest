@@ -1,4 +1,7 @@
-const UserRepo = require('../UserRepo').UserRepo;
+import {User} from "../../domains/users";
+import UserRepo from "../UserRepo";
+import {DocumentClient} from "aws-sdk/clients/dynamodb";
+
 const AWS = require('aws-sdk');
 
 const TABLE_NAME = 'Users';
@@ -16,18 +19,16 @@ AWS.config.update({
   secretAccessKey: AWS_SECRET_ACCESS_KEY,
 });
 
-const DocumentClient = AWS.DynamoDB.DocumentClient;
-
-exports.UserRepoDynamo = class UserRepoDynamo extends UserRepo{
+export default class UserRepoDynamo implements UserRepo{
+  private client;
   
   constructor() {
-    super()
     this.client = new DocumentClient();
   }
   
-  async insertUser(user) {
+  async insertUser(user: User): Promise<User> {
     let param = this.wrapUserAsParamToUpdate(user);
-    const req = new Promise (async (resolve, reject) => {
+    const req = new Promise<User> (async (resolve, reject) => {
       await this.checkDuplicate(user.username, reject);
       this.client.put(param, async (err, data) => {
         if (err) {
@@ -42,9 +43,9 @@ exports.UserRepoDynamo = class UserRepoDynamo extends UserRepo{
     return req;
   }
   
-  async findUserByUsername(username) {
+  async findUserByUsername(username: string): Promise<User> {
     let params = this.wrapUserAsParamToGet({ username }, false);
-    return new Promise (  (resolve, reject) => {
+    return new Promise<User> (  (resolve, reject) => {
         this.client.query(params, (err, data) => {
           if (err) {
             console.error("Unable to get item. Error JSON:", JSON.stringify(err, null, 2));
@@ -57,6 +58,8 @@ exports.UserRepoDynamo = class UserRepoDynamo extends UserRepo{
     );
   }
   
+  
+  async close() {}
   async truncate() {
     const scanParams = {
       TableName: TABLE_NAME,
@@ -89,13 +92,13 @@ exports.UserRepoDynamo = class UserRepoDynamo extends UserRepo{
     await prosedure;
   }
   
-  async checkDuplicate(username, reject) {
+  private async checkDuplicate(username: string, reject: (string)=>void) {
     let preRow = await this.findUserByUsername(username);
     if(preRow) {
       reject('Duplicate username');
     }
   }
-  wrapUserAsParamToUpdate(user, isNew = true) {
+  private wrapUserAsParamToUpdate(user: User, isNew: boolean = true) {
     user.id = isNew ?  this.fakeUUID(user.username) : user.id;
     return {
       TableName: TABLE_NAME,
@@ -103,7 +106,7 @@ exports.UserRepoDynamo = class UserRepoDynamo extends UserRepo{
     };
   }
   
-  wrapUserAsParamToGet(user, ...opts) {
+  private wrapUserAsParamToGet(user: User, ...opts) {
     return {
       TableName: TABLE_NAME,
       KeyConditionExpression: "username = :username",
@@ -114,7 +117,7 @@ exports.UserRepoDynamo = class UserRepoDynamo extends UserRepo{
     };
   }
   
-  fakeUUID (name) {
+  private fakeUUID (name: string): string {
     return new Date().toTimeString() + '-' + name;
   }
 }
