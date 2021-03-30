@@ -3,7 +3,7 @@ import UserRepo from "../UserRepo";
 import * as mysql from 'mysql';
 import {Connection} from "mysql";
 
-const TABLE_NAME = 'user';
+const TABLE_NAME = 'users';
 const MYSQL_HOST = process.env.MYSQL_HOST || 'localhost';
 const MYSQL_PORT = Number(process.env.MYSQL_PORT) || 3306;
 const MYSQL_USERNAME = process.env.MYSQL_USERNAME || 'root';
@@ -18,12 +18,12 @@ const MYSQL_OPTS = {
   database: MYSQL_DEFAULT_SCHEMA,
 };
 
-console.info(MYSQL_OPTS);
 
 export default class UserRepoMySQL implements UserRepo{
   private pool;
   
   constructor() {
+    console.info(MYSQL_OPTS);
     if (process.env.NODE_ENV === 'production') {
       this.pool = {
         getConn: (cb: (err, connection) => void ) => {
@@ -103,6 +103,6 @@ export default class UserRepoMySQL implements UserRepo{
   
   }
   
-  truncate() {
+  close() {
   }
 }

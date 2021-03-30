@@ -28,7 +28,7 @@ export default class UserRepoMock implements UserRepo{
     );
   }
   
-  truncate(): void {
+  close(): void {
     data.length = 0;
   }
 }

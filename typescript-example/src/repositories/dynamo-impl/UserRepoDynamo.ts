@@ -58,7 +58,7 @@ export default class UserRepoDynamo implements UserRepo{
     );
   }
   
-  async truncate() {
+  async close() {
     const scanParams = {
       TableName: TABLE_NAME,
     }

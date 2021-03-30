@@ -56,6 +56,6 @@ describe('test endpoint', () => {
   
   afterAll(() => {
     //FIXME: DynamoDB 실행시 jest 와 충돌되어 jest가 꺼지지 않음
-    // userRepo.truncate();
+    // userRepo.close();
   })
 })

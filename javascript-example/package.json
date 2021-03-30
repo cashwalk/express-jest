@@ -18,6 +18,8 @@
     "express": "^4.17.1",
     "express-validator": "^6.10.0",
     "mysql": "^2.18.1",
-    "pg": "^8.5.1"
+    "pg": "^8.5.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.6.2"
   }
 }

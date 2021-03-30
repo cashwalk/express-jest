@@ -57,6 +57,6 @@ describe('test endpoint', () => {
   })
   
   afterAll(() => {
-    userRepo.truncate();
+    userRepo.close();
   })
 })

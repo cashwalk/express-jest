@@ -119,8 +119,8 @@ describe("사용자 인증 절차 GROUP | ", () => {
     expect(isFail).toBe(false);
   });
   
-  it('Truncate Test', async () => {
-    await userRepo.truncate();
+  it.skip('Truncate Test', async () => {
+    await userRepo.close();
   })
   
   afterEach(() => {
@@ -129,6 +129,6 @@ describe("사용자 인증 절차 GROUP | ", () => {
   
   afterAll(() => {
     //COMMON CLEANUP
-    userRepo.truncate();
+    userRepo.close();
   })
 })

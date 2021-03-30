@@ -1,5 +1,6 @@
 const UserRepoDyn = require('../repositories/dynamo-impl/UserRepoDynamo').UserRepoDynamo;
 const UserRepoMySQL = require('../repositories/mysql-impl/UserRepoMySQL').UserRepoMySQL;
+const UserRepoPostgres = require('../repositories/postgres-impl/UserRepoPostgres').UserRepoPostgres;
 const UserService = require('./UserService').UserService;
 
 const DB_TYPE = process.env.DB_TYPE || 'dynamo';
@@ -9,7 +10,7 @@ const userService = (function initUserService() {
   if (DB_TYPE.toLowerCase() === 'mysql') {
     return new UserService(new UserRepoMySQL());
   } else if (DB_TYPE.toLowerCase() === 'postgres') {
-    return new UserService(new UserRepoDyn());
+    return new UserService(new UserRepoPostgres());
   } else {
     return new UserService(new UserRepoDyn());
   }

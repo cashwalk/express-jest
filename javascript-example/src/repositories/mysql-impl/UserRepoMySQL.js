@@ -1,7 +1,7 @@
 const UserRepo = require('../UserRepo').UserRepo;
 const mysql = require('mysql');
 
-const TABLE_NAME = 'user';
+const TABLE_NAME = 'users';
 const MYSQL_HOST = process.env.MYSQL_HOST || 'localhost';
 const MYSQL_PORT = Number(process.env.MYSQL_PORT) || 3306;
 const MYSQL_USERNAME = process.env.MYSQL_USERNAME || 'root';
@@ -99,6 +99,6 @@ exports.UserRepoMySQL = class UserRepoMySQL extends UserRepo{
   
   }
   
-  truncate() {
+  close() {
   }
 }

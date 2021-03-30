@@ -57,7 +57,7 @@ exports.UserRepoDynamo = class UserRepoDynamo extends UserRepo{
     );
   }
   
-  async truncate() {
+  async close() {
     const scanParams = {
       TableName: TABLE_NAME,
     }
